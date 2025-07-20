@@ -104,7 +104,7 @@ PRIVATE CONSTRUCTOR CDicObj (BYREF pDic AS CDicObj)
    FOR i AS LONG = cvKeys.GetLBound TO cvKeys.GetUBound
       cvKey = cvKeys.GetVariantElem(i)
       cvValue = pDic.Item(cvKey)
-      pDic.Add(cvKey, cvValue)
+      m_pDictionary.Add(cvKey, cvValue)
    NEXT
    CDICOBJ_DP("CDICOBJ CONSTRUCTOR pDic = " & WSTR(m_pDictionary) & " - m_pDictionary = " & WSTR(m_pDictionary))
 END CONSTRUCTOR
