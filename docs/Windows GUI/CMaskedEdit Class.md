@@ -70,25 +70,26 @@ pMaskedEdit.SetText("(123) 123-1212"), TRUE
 ```
 ' ########################################################################################
 ' Microsoft Windows
-' Contents: CWindow masked edit control example
+' File: CW_MaskedEdit_01.bas
+' Contents: CWindow - Masked Edit Control
 ' Compiler: FreeBasic 32 & 64 bit
-' Copyright (c) 2018 José Roca. Freeware. Use at your own risk.
+' Copyright (c) 2025 José Roca. Freeware. Use at your own risk.
 ' THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
 ' EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
 ' MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 ' ########################################################################################
 
 #define UNICODE
-#INCLUDE ONCE "Afx/CWindow.inc"
-#INCLUDE ONCE "Afx/CMaskedEdit.inc"
-USING Afx
+#INCLUDE ONCE "AfxNova/CWindow.inc"
+#INCLUDE ONCE "AfxNova/CMaskedEdit.inc"
+USING AfxNova
 
-DECLARE FUNCTION WinMain (BYVAL hInstance AS HINSTANCE, _
-                          BYVAL hPrevInstance AS HINSTANCE, _
-                          BYVAL szCmdLine AS ZSTRING PTR, _
-                          BYVAL nCmdShow AS LONG) AS LONG
+DECLARE FUNCTION wWinMain (BYVAL hInstance AS HINSTANCE, _
+                           BYVAL hPrevInstance AS HINSTANCE, _
+                           BYVAL pwszCmdLine AS WSTRING PTR, _
+                           BYVAL nCmdShow AS LONG) AS LONG
 
-   END WinMain(GetModuleHandleW(NULL), NULL, COMMAND(), SW_NORMAL)
+   END wWinMain(GetModuleHandleW(NULL), NULL, WCOMMAND(), SW_NORMAL)
 
 ' // Forward declaration
 DECLARE FUNCTION WndProc (BYVAL hwnd AS HWND, BYVAL uMsg AS UINT, BYVAL wParam AS WPARAM, BYVAL lParam AS LPARAM) AS LRESULT
@@ -98,14 +99,16 @@ CONST IDC_MASKED = 1001
 ' ========================================================================================
 ' Main
 ' ========================================================================================
-FUNCTION WinMain (BYVAL hInstance AS HINSTANCE, _
-                  BYVAL hPrevInstance AS HINSTANCE, _
-                  BYVAL szCmdLine AS ZSTRING PTR, _
-                  BYVAL nCmdShow AS LONG) AS LONG
+FUNCTION wWinMain (BYVAL hInstance AS HINSTANCE, _
+                   BYVAL hPrevInstance AS HINSTANCE, _
+                   BYVAL pwszCmdLine AS WSTRING PTR, _
+                   BYVAL nCmdShow AS LONG) AS LONG
 
    ' // Set process DPI aware
    ' // The recommended way is to use a manifest file
-   AfxSetProcessDPIAware
+   SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE)
+   ' // Enable visual styles without including a manifest file
+   AfxEnableVisualStyles
 
    ' // Creates the main window
    DIM pWindow AS CWindow
@@ -139,21 +142,10 @@ FUNCTION WndProc (BYVAL hwnd AS HWND, BYVAL uMsg AS UINT, BYVAL wParam AS WPARAM
    SELECT CASE uMsg
 
       CASE WM_CREATE
-         ' // If you want to create controls in WM_CREATE instead of in WinMain, you can
-         ' // retrieve a pointer of the class with AfxCWindowPtr(lParam). Use hwnd as the
-         ' // handle of the window instead of pWindow->hWindow or omitting this parameter
-         ' // because CWindow doesn't know the value of this handle until the WM_CREATE
-         ' // message has been processed.
-         ' DIM pWindow AS CWindow PTR = AfxCWindowPtr(lParam)
-         ' IF pWindow THEN pWindow->AddControl("Button", hwnd, IDCANCEL, "&Close", 350, 250, 75, 23)
-         ' // An alternative is to pass the value of the main window handle to CWindow with
-         ' DIM pWindow AS CWindow PTR = AfxCWindowPtr(lParam)
-         ' pWindow->hWindow = hwnd
-         ' IF pWindow THEN pWindow->AddControl("Button", , IDCANCEL, "&Close", 350, 250, 75, 23)
          EXIT FUNCTION
 
       CASE WM_COMMAND
-         SELECT CASE GET_WM_COMMAND_ID(wParam, lParam)
+         SELECT CASE CBCTL(wParam, lParam)
             CASE IDCANCEL
                ' // If ESC key pressed, close the application by sending an WM_CLOSE message
                IF GET_WM_COMMAND_CMD(wParam, lParam) = BN_CLICKED THEN
@@ -161,16 +153,6 @@ FUNCTION WndProc (BYVAL hwnd AS HWND, BYVAL uMsg AS UINT, BYVAL wParam AS WPARAM
                   EXIT FUNCTION
                END IF
          END SELECT
-
-      CASE WM_SIZE
-         ' // Optional resizing code
-         IF wParam <> SIZE_MINIMIZED THEN
-            ' // Retrieve a pointer to the CWindow class
-            DIM pWindow AS CWindow PTR = AfxCWindowPtr(hwnd)
-            ' // Move the position of the button
-            IF pWindow THEN pWindow->MoveWindow GetDlgItem(hwnd, IDCANCEL), _
-               pWindow->ClientWidth - 120, pWindow->ClientHeight - 50, 75, 23, CTRUE
-         END IF
 
     	CASE WM_DESTROY
          ' // Ends the application by sending a WM_QUIT message
