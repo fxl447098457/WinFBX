@@ -1,6 +1,6 @@
 # RichEdit Procedures
 
-The RichEdit procedures provides detailed descriptions of various procedures related to Rich Edit controls in Windows. It includes a table with procedure names and their descriptions, followed by detailed explanations of each procedure, including their parameters, return values, and usage examples. The procedures cover a wide range of functionalities such as URL detection, autocorrect, clEM_GETAUTOURLDETECTipboard operations, undo/redo actions, character formatting, and various other features and settings for Rich Edit controls.
+The RichEdit procedures provides detailed descriptions of various procedures related to Rich Edit controls in Windows. It includes a table with procedure names and their descriptions, followed by detailed explanations of each procedure, including their parameters, return values, and usage examples. The procedures cover a wide range of functionalities such as URL detection, autocorrect, clipboard operations, undo/redo actions, character formatting, and various other features and settings for Rich Edit controls.
 
 | Name       | Description |
 | ---------- | ----------- |
